@@ -1,0 +1,26 @@
+const jwt = require("jsonwebtoken");
+const User = require("../models/user");
+
+const userAuth=async(req,res,next)=>{
+    //read the token
+   try{
+     const token = req.cookies.jwt;
+     console.log("Token:", token);
+        if (!token) {
+            throw new Error("Invalid token");
+        }
+    const decoded = jwt.verify(token, "abc@123");
+    console.log(decoded);
+    const {_id} = decoded;
+    const user = await User.findById(_id);
+    if(!user){
+        throw new Error("User not found");
+    }
+    req.user = user;
+    next();
+   }catch(err){
+     res.status(400).send("Error: " + err.message);
+   }
+};
+
+module.exports = userAuth;
