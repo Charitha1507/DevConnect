@@ -12,16 +12,18 @@ authRouter.post("/signup", async(req, res) => {
      // Validate user data
      validateSignup(req);
      //eccrypt password
-     const {firstName,lastName,email,password,age,gender,skills}=req.body;
+     const {firstName,lastName,email,password}=req.body;
      console.log("Received data:", req.body);
      const passwordHash=await bcrypt.hash(password, 10);
      console.log(passwordHash);
      //create user
      const user=new User({
-         firstName,lastName,email,password:passwordHash,gender,age,skills
+         firstName,lastName,email,password:passwordHash
      });
+     const token = await user.getJWT();
+     res.cookie("jwt",token);
      await user.save();
-   res.send("user added successfully");
+   res.send(user);
    }catch(err){
      res.status(500).send("Error adding user: " + err.message);
    }

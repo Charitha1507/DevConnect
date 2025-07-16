@@ -1,6 +1,6 @@
-import Navbar from './Navbar';
-import Profile from './Profile';
-import Login from './Login';
+import Navbar from './components/Navbar';
+import Profile from './components/Profile';
+import Login from './components/Login';
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import {Provider} from 'react-redux';
 import store from './utils/appStore';
@@ -10,7 +10,11 @@ import { addUser } from "./utils/userSlice";
 import { useNavigate } from 'react-router-dom';
 import {useSelector} from "react-redux";
 import { useEffect } from "react";
-import Feed from "./Feed.jsx";
+import Feed from "./components/Feed.jsx";
+import Connections from "./components/Connections.jsx";
+import Requests from "./components/Requests.jsx";
+import Footer from './components/Footer.jsx';
+import Chat from './components/Chat.jsx';
 
 function Layout() {
   const dispatch=useDispatch();
@@ -38,6 +42,7 @@ function Layout() {
     <>
       <Navbar />
       <Outlet />
+      <Footer />
     </>
   );
 }
@@ -47,7 +52,11 @@ const appRouter = createBrowserRouter([
     path: '/',
     element: <Layout />, 
     children: [
-      {
+    {
+      path:'/',
+      element:<Login />
+    },
+  {
     path: '/login',
     element: <Login />, 
   },
@@ -59,6 +68,16 @@ const appRouter = createBrowserRouter([
     path:'/feed',
     element:<Feed/>,
   },
+  {
+    path:'/connections',
+    element:<Connections />,
+  },{
+    path:'/requests',
+    element:<Requests/>
+  } ,{
+    path:'/chat/:targetUserId',
+    element:<Chat/>
+  }
  ],
   },
 ]);
