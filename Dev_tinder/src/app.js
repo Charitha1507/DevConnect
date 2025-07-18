@@ -12,7 +12,7 @@ const cors=require('cors');
 const http = require('http');
 const initializeSocket = require('./utils/socket');
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: process.env.FRONTEND_URL || "http://localhost:5173",
     credentials: true
 }));
 app.use(express.json());
@@ -29,8 +29,8 @@ initializeSocket(server);
 //start the server
 connectDb().then(()=>{
     console.log('connected to database');
-    server.listen(1511 ,()=>{
-    console.log(`Server is listening on port 1511`);
+    const PORT = process.env.PORT || 1511;
+    server.listen(PORT ,()=>{
+    console.log(`Server is listening on port ${PORT}`);
 });
 }).catch(err => console.log(err));
-
