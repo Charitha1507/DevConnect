@@ -13,7 +13,8 @@ const getSecretRoomId = (userId, targetUserId) => {
 const initializeSocket = (server) => {
   const io = socket(server, {
     cors: {
-      origin: process.env.FRONTEND_URL || "http://localhost:5173",
+      origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+     credentials: true 
     },
   });
 
@@ -22,7 +23,7 @@ const initializeSocket = (server) => {
       const roomId = getSecretRoomId(userId, targetUserId);
       console.log(firstName + " joined Room : " + roomId);
       socket.join(roomId);
-    });
+    }); 
 
     socket.on(
       "sendMessage",
