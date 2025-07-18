@@ -13,7 +13,7 @@ const Chat = () => {
   const userId = user?._id;
 
   const fetchChatMessages = async () => {
-    const chat = await axios.get(process.env.BASE_URL + "/chat/" + targetUserId, {
+    const chat = await axios.get(import.meta.env.VITE_BASE_URL + "/chat/" + targetUserId, {
       withCredentials: true,
     });
 

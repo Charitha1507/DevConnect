@@ -24,7 +24,7 @@ function Layout() {
   const fetchUser=async()=>{
   if(userData) return;
    try{
-     const user=await axios.get(process.env.BASE_URL+"/profile",{withCredentials:true});
+     const user=await axios.get(import.meta.env.VITE_BASE_URL+"/profile",{withCredentials:true});
      dispatch(addUser(user.data));
    }catch(err){
     if(err.status===401){

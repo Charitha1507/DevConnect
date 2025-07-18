@@ -1,6 +1,7 @@
 const socket = require("socket.io");
 const crypto = require("crypto");
 const { Chat}  = require("../models/chat");
+require('dotenv').config();
 
 const getSecretRoomId = (userId, targetUserId) => {
   return crypto
@@ -12,7 +13,7 @@ const getSecretRoomId = (userId, targetUserId) => {
 const initializeSocket = (server) => {
   const io = socket(server, {
     cors: {
-      origin: "https://flourishing-nasturtium-1f3482.netlify.app",
+      origin: process.env.FRONTEND_URL || "http://localhost:5173",
     },
   });
 

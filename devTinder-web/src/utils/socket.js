@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
-import { BASE_URL } from '../utils/constants';
+
 
 export const createSocketConnection=()=>{
-    return io(BASE_URL);
+    return io(import.meta.env.VITE_BASE_URL || "http://localhost:1511");
 }

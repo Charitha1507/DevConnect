@@ -21,7 +21,7 @@ const EditProfile = ({ user }) => {
     setError("");
     try {
       const res = await axios.patch(
-        process.env.BASE_URL + "/profile/edit",
+        import.meta.env.VITE_BASE_URL + "/profile/edit",
         {
           firstName,
           lastName,

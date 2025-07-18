@@ -10,7 +10,7 @@ const Requests = () => {
   const reviewRequest = async (status, _id) => {
     try {
       const res = axios.post(
-        process.env.BASE_URL + "/review/" + status + "/" + _id,
+        import.meta.env.VITE_BASE_URL + "/review/" + status + "/" + _id,
         {},
         { withCredentials: true }
       );
@@ -20,7 +20,7 @@ const Requests = () => {
 
   const fetchRequests = async () => {
     try {
-      const res = await axios.get(process.env.BASE_URL + "/user/requests/received", {
+      const res = await axios.get(import.meta.env.VITE_BASE_URL + "/user/requests/received", {
         withCredentials: true,
       });
       console.log(res.data.data);

@@ -20,7 +20,7 @@ const Login = () => {
       setError(""); // Clear previous errors
       setLoading(true);
       const res = await axios.post(
-       process.env.BASE_URL + "/login",
+       import.meta.env.VITE_BASE_URL + "/login",
         {
           email,
           password,
@@ -50,7 +50,7 @@ const Login = () => {
       setError(""); // Clear previous errors
       setLoading(true);
       const res = await axios.post(
-        process.env.BASE_URL + "/signup",
+        import.meta.env.VITE_BASE_URL + "/signup",
         { firstName, lastName, email, password },
         { withCredentials: true }
       );

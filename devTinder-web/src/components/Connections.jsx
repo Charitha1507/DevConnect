@@ -9,7 +9,7 @@ const Connections = () => {
   const dispatch = useDispatch();
   const fetchConnections = async () => {
     try {
-      const res = await axios.get(process.env.BASE_URL + "/user/connections", {
+      const res = await axios.get(import.meta.env.VITE_BASE_URL + "/user/connections", {
         withCredentials: true,
       });
       dispatch(addConnections(res.data.data));
