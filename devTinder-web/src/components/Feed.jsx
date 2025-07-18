@@ -12,7 +12,7 @@ const Feed =()=>{
     const getFeed=async()=>{
         if (feed && feed.length > 0) return;
        try{
-        const res = await axios.get("http://localhost:1511/user/feed", { withCredentials: true });
+        const res = await axios.get(process.env.BASE_URL+"/user/feed", { withCredentials: true });
         console.log(res.data.data   );
         dispatch(addFeed(res.data.data));
        }catch(err){
