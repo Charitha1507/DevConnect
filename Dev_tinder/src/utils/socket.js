@@ -17,7 +17,7 @@ const getSecretRoomId = (userId, targetUserId) => {
 const initializeSocket = (server) => {
   const io = socket(server, {
     cors: {
-      origin: '*',
+      origin: process.env.FRONTEND_URL,
      credentials: true 
     },
   });
