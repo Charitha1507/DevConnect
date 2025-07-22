@@ -11,12 +11,13 @@ const Navbar=()=>{
   const navigate = useNavigate();
 
   const handleLogout=async()=>{
-     await axios.post(import.meta.env.VITE_BASE_URL+"/logout",{},{withCredentials:true});
+     await axios.post(import.meta.env.VITE_BASE_URL+"/logout" || "http://localhost:1511/logout",{},{withCredentials:true});
      dispatch(removeUser());
      return navigate('/login');
   };
 
-    return(        
+    return(     
+      <nav className="sticky top-0 z-50"> 
      <div className="navbar bg-base-300 shadow-sm">
   <div className="flex-1">
     <Link to="/feed" className="btn btn-ghost text-xl"> 👩🏻‍💻DevConnect</Link>
@@ -44,6 +45,7 @@ const Navbar=()=>{
               Profile
             </Link>
           </li>
+          <li><Link to="/group">Group</Link></li>
           <li><Link to="/connections">Connections</Link></li>
           <li><Link to="/requests">Requests</Link></li>
           <li><button onClick={handleLogout}>Logout</button></li>
@@ -53,6 +55,7 @@ const Navbar=()=>{
   )}
 </div>
 </div>
+  </nav>
     );
 };
 

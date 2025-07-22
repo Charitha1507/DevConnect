@@ -9,14 +9,9 @@ const userAuth = require('../middlewares/auth');
 
 authRouter.post("/signup", async(req, res) => {
  try{
-     // Validate user data
      validateSignup(req);
-     //eccrypt password
      const {firstName,lastName,email,password}=req.body;
-     console.log("Received data:", req.body);
      const passwordHash=await bcrypt.hash(password, 10);
-     console.log(passwordHash);
-     //create user
      const user=new User({
          firstName,lastName,email,password:passwordHash
      });

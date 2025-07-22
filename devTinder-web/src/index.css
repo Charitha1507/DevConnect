@@ -1,7 +1,6 @@
- @import "tailwindcss";
+@import "tailwindcss";
 
- @plugin "daisyui" {
-   themes: lighg --default, dark --prefersdark;
- }
-
+@plugin "daisyui"{
+  themes: lighg --default, dark --prefersdark;
+}
 

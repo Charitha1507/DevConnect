@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 const Connections = () => {
   const connections = useSelector((store) => store.connections);
   const dispatch = useDispatch();
+
   const fetchConnections = async () => {
     try {
       const res = await axios.get(import.meta.env.VITE_BASE_URL + "/user/connections", {
@@ -14,7 +15,6 @@ const Connections = () => {
       });
       dispatch(addConnections(res.data.data));
     } catch (err) {
-      // Handle Error Case
       console.error(err);
     }
   };
@@ -23,44 +23,45 @@ const Connections = () => {
     fetchConnections();
   }, []);
 
-  if (!connections) return;
+  if (!connections) return null;
 
   if (connections.length === 0) return <h1 className="flex justify-center my-10"> No Connections Found</h1>;
 
   return (
-    <div className="text-center my-10">
-      <h1 className="text-bold text-white text-3xl">Connections</h1>
+    <div className="max-w-3xl mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold text-primary mb-6">Connections</h1>
 
-      {connections.map((connection) => {
-        const { _id, firstName, lastName, photoURL, age, gender, about } =
-          connection;
+      <div className="space-y-4">
+        {connections.map((connection) => {
+          const { _id, firstName, lastName, photoURL, age, gender, about } = connection;
 
-        return (
-          <div
-            key={_id}
-            className="flex m-4 p-4 rounded-lg bg-base-300 w-1/2 mx-auto"
-          >
-            <div>
-              <img
-                alt="photo"
-                className="w-20 h-20 rounded-full object-cover"
-                src={photoURL}
-              />
+          return (
+            <div
+              key={_id}
+              className="flex items-center justify-between p-4 rounded-lg bg-base-200 shadow-sm hover:shadow-md transition-all"
+            >
+              <div className="flex items-center gap-4">
+                <img
+                  alt="photo"
+                  className="w-14 h-14 rounded-full object-cover border-2 border-base-300"
+                  src={photoURL}
+                />
+                <div>
+                  <h2 className="font-semibold text-lg">{firstName} {lastName}</h2>
+                  {age && gender && <p className="text-sm text-gray-600">{age}, {gender}</p>}
+                  {about && <p className="text-sm text-gray-500">{about}</p>}
+                </div>
+              </div>
+
+              <Link to={`/chat/${_id}`}>
+                <button className="btn btn-primary btn-sm">Chat</button>
+              </Link>
             </div>
-            <div className="text-left mx-4 ">
-              <h2 className="font-bold text-xl">
-                {firstName + " " + lastName}
-              </h2>
-              {age && gender && <p>{age + ", " + gender}</p>}
-              <p>{about}</p>
-            </div>
-            <Link to={"/chat/" + _id}>
-              <button className="btn btn-primary">Chat</button>
-            </Link>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 };
+
 export default Connections;

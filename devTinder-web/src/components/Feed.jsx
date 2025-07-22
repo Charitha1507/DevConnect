@@ -13,7 +13,6 @@ const Feed =()=>{
         if (feed && feed.length > 0) return;
        try{
         const res = await axios.get(import.meta.env.VITE_BASE_URL+"/user/feed", { withCredentials: true });
-        console.log(res.data.data   );
         dispatch(addFeed(res.data.data));
        }catch(err){
          console.error("error", err.message);

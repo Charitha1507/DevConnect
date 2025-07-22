@@ -3,6 +3,7 @@ import UserCard from "./Usercard";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
+import Toast from "./Toast";
 
 const EditProfile = ({ user }) => {
   const [firstName, setFirstName] = useState(user.firstName);
@@ -45,6 +46,9 @@ const EditProfile = ({ user }) => {
 
   return (
     <>
+      <div className="fixed top-12 left-1/2 -translate-x-1/2 z-50">
+      {showToast && <Toast message="Profile saved successfully." className="bg-green-500 text-white" />}
+      </div>
       <div className="flex justify-center my-10">
         <div className="flex justify-center mx-10">
           <div className="card bg-base-300 w-96 shadow-xl">
@@ -139,16 +143,9 @@ const EditProfile = ({ user }) => {
           </div>
         </div>
         <UserCard
-          user={{ firstName, lastName, photoURL, age, gender, about }}
+          user={{ _id: user._id, firstName, lastName, photoURL, age, gender, skills,about }}
         />
       </div>
-      {showToast && (
-        <div className="toast toast-top toast-center">
-          <div className="alert alert-success">
-            <span>Profile saved successfully.</span>
-          </div>
-        </div>
-      )}
     </>
   );
 };

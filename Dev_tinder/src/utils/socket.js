@@ -2,6 +2,10 @@ const socket = require("socket.io");
 const crypto = require("crypto");
 const { Chat}  = require("../models/chat");
 require('dotenv').config();
+const Group = require("../models/group");
+const User = require("../models/user");
+
+
 
 const getSecretRoomId = (userId, targetUserId) => {
   return crypto
@@ -21,7 +25,6 @@ const initializeSocket = (server) => {
   io.on("connection", (socket) => {
     socket.on("joinChat", ({ firstName, userId, targetUserId }) => {
       const roomId = getSecretRoomId(userId, targetUserId);
-      console.log(firstName + " joined Room : " + roomId);
       socket.join(roomId);
     }); 
 
@@ -30,8 +33,6 @@ const initializeSocket = (server) => {
       async ({ firstName, lastName, userId, targetUserId, text }) => {
         try {
           const roomId = getSecretRoomId(userId, targetUserId);
-          console.log(firstName + " " + text);
-
           let chat = await Chat.findOne({
             participants: { $all: [userId, targetUserId] },
           });
@@ -46,15 +47,38 @@ const initializeSocket = (server) => {
           chat.messages.push({
             senderId: userId,
             text,
+            timestamp: new Date(),
           });
 
           await chat.save();
-          io.to(roomId).emit("messageReceived", { firstName, lastName, text });
+          io.to(roomId).emit("messageReceived", { firstName, lastName, text , timestamp: new Date(),});
         } catch (err) {
-          console.log(err);
+          res.status(500).send("Error sending message: " + err.message);
         }
       }
     );
+    socket.on("joinGroup", ({ groupId }) => {
+      socket.join(groupId);
+    });
+
+    socket.on("sendGroupMessage", async ({ groupId, userId, text }) => {
+      try {
+        const group = await Group.findById(groupId);
+        group.messages.push({ senderId: userId, text });
+        await group.save();
+        const sender = await User.findById(userId);
+        io.to(groupId).emit("groupMessageReceived", {
+          userId,
+          text,
+          firstName: sender?.firstName,
+          lastName: sender?.lastName,
+          senderId: userId,
+          timestamp: new Date(),
+        });
+      } catch (err) {
+        res.status(500).send("Error sending group message: " + err.message);
+      }
+    });
 
     socket.on("disconnect", () => {});
   });

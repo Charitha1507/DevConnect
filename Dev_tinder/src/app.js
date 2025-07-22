@@ -9,21 +9,24 @@ const profileRouter = require('./routes/profile');
 const requestRouter = require('./routes/requests');
 const userRouter = require('./routes/user');
 const chatRouter = require('./routes/chat');
+const router = require('./routes/group');
 const cors=require('cors');
 const http = require('http');
 const initializeSocket = require('./utils/socket');
 app.use(cors({
-    origin: '*',
+    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
     credentials: true,
 }));
 app.use(express.json());
 app.use(cookieParser());
+app.use("/uploads",express.static("uploads"));
 
 app.use('/', authRouter);
 app.use('/profile', profileRouter);
 app.use('/', requestRouter);
 app.use('/user',userRouter);
 app.use('/', chatRouter);
+app.use('/', router);
 
 const server = http.createServer(app);
 initializeSocket(server);

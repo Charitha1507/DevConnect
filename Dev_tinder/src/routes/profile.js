@@ -29,6 +29,7 @@ profileRouter.patch("/edit",userAuth,async(req,res)=>{
         });
         await loggesdInUser.save();
        res.send({
+  _id:loggesdInUser._id,
   firstName: loggesdInUser.firstName,
   lastName: loggesdInUser.lastName,
   gender: loggesdInUser.gender,

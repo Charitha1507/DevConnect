@@ -11,16 +11,13 @@ const Login = () => {
   const [lastName, setLastName] = useState("");
   const [isLoginForm, setIsLoginForm] = useState(true);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
-      setError(""); // Clear previous errors
-      setLoading(true);
       const res = await axios.post(
-       import.meta.env.VITE_BASE_URL + "/login",
+        import.meta.env.VITE_BASE_URL + "/login",
         {
           email,
           password,
@@ -30,25 +27,12 @@ const Login = () => {
       dispatch(addUser(res.data));
       return navigate("/feed");
     } catch (err) {
-      console.error("Login error:", err);
-      if (err.code === 'ERR_NETWORK') {
-        setError("Network error: Please check if the server is running");
-      } else if (err.response?.status === 401) {
-        setError("Invalid email or password");
-      } else if (err.response?.data) {
-        setError(err.response.data);
-      } else {
-        setError("Something went wrong. Please try again.");
-      }
-    } finally {
-      setLoading(false);
+      setError(err?.response?.data || "Something went wrong");
     }
   };
 
   const handleSignUp = async () => {
     try {
-      setError(""); // Clear previous errors
-      setLoading(true);
       const res = await axios.post(
         import.meta.env.VITE_BASE_URL + "/signup",
         { firstName, lastName, email, password },
@@ -57,18 +41,7 @@ const Login = () => {
       dispatch(addUser(res.data));
       return navigate("/profile");
     } catch (err) {
-      console.error("Signup error:", err);
-      if (err.code === 'ERR_NETWORK') {
-        setError("Network error: Please check if the server is running");
-      } else if (err.response?.status === 400) {
-        setError(err.response.data || "Invalid input data");
-      } else if (err.response?.data) {
-        setError(err.response.data);
-      } else {
-        setError("Something went wrong. Please try again.");
-      }
-    } finally {
-      setLoading(false);
+      setError(err?.response?.data || "Something went wrong");
     }
   };
 
@@ -134,13 +107,8 @@ const Login = () => {
             <button
               className="btn btn-primary"
               onClick={isLoginForm ? handleLogin : handleSignUp}
-              disabled={loading}
             >
-              {loading ? (
-                <span className="loading loading-spinner loading-sm"></span>
-              ) : (
-                isLoginForm ? "Login" : "Sign Up"
-              )}
+              {isLoginForm ? "Login" : "Sign Up"}
             </button>
           </div>
 

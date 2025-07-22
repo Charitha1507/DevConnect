@@ -38,7 +38,6 @@ userRouter.get("/connections", userAuth, async (req, res) => {
       .populate("fromUserId", USER_INFO)
       .populate("toUserId", USER_INFO);
 
-    console.log(connectionRequests);
 
     const data = connectionRequests.map((row) => {
       if (row.fromUserId._id.toString() === loggedInUser._id.toString()) {
@@ -56,10 +55,6 @@ userRouter.get("/connections", userAuth, async (req, res) => {
 userRouter.get("/feed",userAuth,async(req,res)=>{
      try{
           const loggedInuser=req.user;
-          // const page=parseInt(req.query.page)||1;
-          // const limit=parseInt(req.query.limit)||10;
-          // const skip=(page-1)*limit;
-
           const connectionRequests=await ConnectionRequest.find({$or:[{fromUserId:loggedInuser._id},{toUserId:loggedInuser._id}]})
           .select("fromUserId toUserId ");
           const hideUserFromFeed =new Set();

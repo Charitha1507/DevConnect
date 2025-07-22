@@ -15,7 +15,8 @@ import Connections from "./components/Connections.jsx";
 import Requests from "./components/Requests.jsx";
 import Footer from './components/Footer.jsx';
 import Chat from './components/Chat.jsx';
-
+import GroupChat from './components/GroupChat.jsx';
+import OpenGroup from './components/OpenGroup.jsx'; 
 function Layout() {
   const dispatch=useDispatch();
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ function Layout() {
   const fetchUser=async()=>{
   if(userData) return;
    try{
-     const user=await axios.get(import.meta.env.VITE_BASE_URL+"/profile",{withCredentials:true});
+     const user=await axios.get(import.meta.env.VITE_BASE_URL+"/profile" || "http://localhost:1511/profile",{withCredentials:true});
      dispatch(addUser(user.data));
    }catch(err){
     if(err.status===401){
@@ -77,6 +78,12 @@ const appRouter = createBrowserRouter([
   } ,{
     path:'/chat/:targetUserId',
     element:<Chat/>
+  },{
+    path:'/group',
+    element:<GroupChat/>
+  },{
+    path:'/group/:groupId',
+    element:<OpenGroup/>
   }
  ],
   },
